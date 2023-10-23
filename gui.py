@@ -1,9 +1,8 @@
-from tkinter import LEFT, RIGHT, StringVar, TOP
+from tkinter import LEFT, RIGHT, TOP
 from tkinterdnd2 import TkinterDnD, DND_ALL
 import customtkinter as ctk
 import os
-from parser import Parser
-from parsetest import HTMLParser
+from Parser import HTMLParser
 from writer import Writer
 from postformat import Formatter
 
@@ -72,7 +71,7 @@ runButton = ctk.CTkButton(root, text='Run', command=run)
 runButton.pack(side=RIGHT)
 
 # Create drag and drop command
-entryWidget.drop_target_register(DND_ALL)
-entryWidget.dnd_bind("<<Drop>>", get_path)
+entryWidget.drop_target_register(DND_ALL) # type: ignore
+entryWidget.dnd_bind("<<Drop>>", get_path) # type: ignore
 
 root.mainloop()

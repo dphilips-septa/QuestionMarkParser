@@ -1,11 +1,49 @@
 class Question:
     
-    def __init__(self, TYPE : str, text : str, answers, rightAnswer : str, img : str = None):
+    def __init__(self, TYPE : str = "", text : str = "", ID : str = "", answers : list = None, rightAnswer : str = "", img : str = None): # type: ignore
         self.__TYPE = TYPE
         self.__text = text
-        self.__answers = answers
+        self.__ID = ID
+        self.__answers = [] if answers is None else answers
         self.__rightAnswer = rightAnswer
-        self.__rightAnswerIndex = self.__answers.index(self.__rightAnswer)
+        self.__rightAnswerIndex = None
+        try:
+            self.__rightAnswerIndex = self.__answers.index(self.__rightAnswer)
+        except:
+            pass
+        self.__imageURL = img
+        self.__hasGivenRightAnswerError = False 
+        self.__fixedError = False
+    
+    def setType(self, TYPE):
+        self.__TYPE = TYPE
+    
+    def setText(self, text):
+        self.__text = text
+
+    def setID(self, ID):
+        self.__ID = ID
+    
+    def addAnswer(self, answer):
+        self.__answers.append(answer)
+        try:
+            if self.__hasGivenRightAnswerError and not self.__fixedError:
+                self.setRightAnswer(self.__rightAnswer)
+        except:
+            pass
+
+    
+    def setRightAnswer(self, answer):
+        self.__rightAnswer = answer
+        try:
+            self.__rightAnswerIndex = self.__answers.index(self.__rightAnswer)
+            if self.__hasGivenRightAnswerError and not self.__fixedError:
+                print('Error Fixed')
+                self.__fixedError = True
+        except:
+            print("Warning, the right answer that you have provided is not an existing answer within this question, please make sure to add it to minimize the chance of errors")
+            self.__hasGivenRightAnswerError = True
+    def setImg(self, img):
         self.__imageURL = img
         
     def getText(self):
