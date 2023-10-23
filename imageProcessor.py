@@ -6,8 +6,10 @@ import sys
 class Converter:
 
     def __init__(self, base64, fileName):
+        print('ImageProcessor Started')
         self.__base64Text = base64
         self.__fileName = fileName
+        print(self.__base64Text)
         self.__convert()
     
     def __convert(self):

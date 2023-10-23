@@ -55,6 +55,9 @@ class Question:
     def getType(self):
         return self.__TYPE
     
+    def getID(self):
+        return self.__ID
+
     def getRightAnswer(self):
         return self.__rightAnswer
     
