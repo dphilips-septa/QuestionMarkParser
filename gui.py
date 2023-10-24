@@ -5,6 +5,15 @@ import os
 from Parser import HTMLParser
 from writer import Writer
 from postformat import Formatter
+from icecream import ic
+import FolderCreator
+
+
+use_gui = True
+
+
+
+
 
 global fileName
 
@@ -34,6 +43,7 @@ def run():
     p = HTMLParser(fileName)
 
     # Create and begin output formatter
+    print('Formatter')
     f = Formatter(p.getQuestions())
 
     # Create and begin output writer
@@ -43,35 +53,49 @@ def run():
     writeMessage('Extraction and formatting completed')
 
 def clear():
-    writeMessage("Drag and drop file in the entry box")
+    if use_gui:
+        writeMessage("Drag and drop file in the entry box")
 
 def writeMessage(message):
-    pathLabel.configure(text=message)
+    if use_gui:
+        pathLabel.configure(text=message)
 
 # Create and set paramaters for window
-root = Tk()
-root.geometry("350x100")
-root.title("Jennis")
+if use_gui:
+    root = Tk()
+    root.geometry("350x100")
+    root.title("Jennis")
 
 
-# Create the drag and drop entry box
-entryWidget = ctk.CTkEntry(root)
-entryWidget.pack(side=TOP, padx=5, pady=5)
+    # Create the drag and drop entry box
+    entryWidget = ctk.CTkEntry(root)
+    entryWidget.pack(side=TOP, padx=5, pady=5)
 
-# Create the text box to keep users up to date
-pathLabel = ctk.CTkLabel(root, text="Drag and drop file in the entry box")
-pathLabel.pack(side=TOP)
+    # Create the text box to keep users up to date
+    pathLabel = ctk.CTkLabel(root, text="Drag and drop file in the entry box")
+    pathLabel.pack(side=TOP)
 
-# Create the clear button in order to allow user to input new file
-clearButton = ctk.CTkButton(root, text='Clear', command=clear)
-clearButton.pack(side=LEFT)
+    # Create the clear button in order to allow user to input new file
+    clearButton = ctk.CTkButton(root, text='Clear', command=clear)
+    clearButton.pack(side=LEFT)
 
-# Create the run button in order to allow user to start program when desired
-runButton = ctk.CTkButton(root, text='Run', command=run)
-runButton.pack(side=RIGHT)
+    # Create the run button in order to allow user to start program when desired
+    runButton = ctk.CTkButton(root, text='Run', command=run)
+    runButton.pack(side=RIGHT)
 
-# Create drag and drop command
-entryWidget.drop_target_register(DND_ALL) # type: ignore
-entryWidget.dnd_bind("<<Drop>>", get_path) # type: ignore
+    # Create drag and drop command
+    entryWidget.drop_target_register(DND_ALL) # type: ignore
+    entryWidget.dnd_bind("<<Drop>>", get_path) # type: ignore
 
-root.mainloop()
+    root.mainloop()
+else:
+    Folders = [x[0] for x in os.walk('All Tests Data/')]
+    fileNames = []
+    for folder in Folders:
+        fileNames.append(folder + '/' + os.listdir(folder)[0])
+    fileNames.remove(fileNames[0])
+    ic(fileNames)
+
+    for name in fileNames:
+        fileName = name
+        run()

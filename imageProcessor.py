@@ -6,20 +6,19 @@ import sys
 class Converter:
 
     def __init__(self, base64, fileName):
-        print('ImageProcessor Started')
         self.__base64Text = base64
         self.__fileName = fileName
-        print(self.__base64Text)
         self.__convert()
     
     def __convert(self):
         try:
+            # Converts the Base64 string into bytes
             image = base64.b64decode(self.__base64Text, validate=True)
             with open(self.__fileName, "wb") as f:
                 f.write(image)
             self.__removeWhitespace()
         except binascii.Error as e:
-            print(e)
+            pass
     
     def __getPixelArray(self, image):
         # Get the height and width of the image
@@ -34,6 +33,8 @@ class Converter:
                 pixel_colors[i][j] = image[i][j]
         return pixel_colors
     
+
+    # Method for cropping image to remove all whitespace
     def __removeWhitespace(self):
         # Read image based on given filename
         image = cv2.imread(self.__fileName)
